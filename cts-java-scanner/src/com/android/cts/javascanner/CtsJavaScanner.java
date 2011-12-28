@@ -13,33 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.cts.nativescanner;
+package com.android.cts.javascanner;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class that searches a source directory for native gTests and outputs a
  * list of test classes and methods.
  */
-public class CtsNativeScanner {
+public class CtsJavaScanner {
 
     private static void usage(String[] args) {
         System.err.println("Arguments: " + Arrays.asList(args));
-        System.err.println("Usage: cts-native-scanner -s SOURCE_DIR -t TEST_SUITE");
+        System.err.println("Usage: cts-java-scanner -s SOURCE_DIR -d DOCLET_PATH");
         System.exit(1);
     }
 
     public static void main(String[] args) throws Exception {
         File sourceDir = null;
-        String testSuite = null;
+        File docletPath = null;
 
         for (int i = 0; i < args.length; i++) {
             if ("-s".equals(args[i])) {
                 sourceDir = new File(getArg(args, ++i, "Missing value for source directory"));
-            } else if ("-t".equals(args[i])) {
-                testSuite = getArg(args, ++i, "Missing value for test suite");
+            } else if ("-d".equals(args[i])) {
+                docletPath = new File(getArg(args, ++i, "Missing value for docletPath"));
             } else {
                 System.err.println("Unsupported flag: " + args[i]);
                 usage(args);
@@ -47,20 +46,17 @@ public class CtsNativeScanner {
         }
 
         if (sourceDir == null) {
-            System.out.println("Source directory is required");
+            System.err.println("Source directory is required");
             usage(args);
         }
 
-        if (testSuite == null) {
-            System.out.println("Test suite is required");
+        if (docletPath == null) {
+            System.err.println("Doclet path is required");
             usage(args);
         }
 
-        TestScanner scanner = new TestScanner(sourceDir, testSuite);
-        List<String> testNames = scanner.getTestNames();
-        for (String name : testNames) {
-            System.out.println(name);
-        }
+        DocletRunner runner = new DocletRunner(sourceDir, docletPath);
+        System.exit(runner.runJavaDoc());
     }
 
     private static String getArg(String[] args, int index, String message) {
