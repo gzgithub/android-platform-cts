@@ -15,26 +15,22 @@
  */
 package com.android.cts.tradefed.result;
 
-import com.android.ddmlib.testrunner.TestIdentifier;
-import com.android.tradefed.device.ITestDevice;
-
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Static utility class for handling Pts Results.
+ * Static utility class for handling Cts Results.
  */
-public class PtsReportUtil {
-    private static final String PTS_RESULT_KEY = "PTS_RESULT";
+public class CtsReportUtil {
+    private static final String CTS_RESULT_KEY = "CTS_RESULT";
 
     /**
-     * Utility method to extract PTS result from test metrics
+     * Utility method to extract CTS result from test metrics
      * @param testMetrics
      * @return result or null if not found
      */
-    public static String getPtsResultFromMetrics(Map<String, String> testMetrics) {
+    public static String getCtsResultFromMetrics(Map<String, String> testMetrics) {
         for (Map.Entry<String, String> entry: testMetrics.entrySet()) {
-            if (PTS_RESULT_KEY.equals(entry.getKey())) {
+            if (CTS_RESULT_KEY.equals(entry.getKey())) {
                 return entry.getValue();
             }
         }
