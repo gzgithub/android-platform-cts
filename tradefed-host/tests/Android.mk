@@ -25,5 +25,3 @@ LOCAL_JAVA_LIBRARIES := tradefed-prebuilt cts-tradefed
 LOCAL_STATIC_JAVA_LIBRARIES := easymock
 
 include $(BUILD_HOST_JAVA_LIBRARY)
-
-
